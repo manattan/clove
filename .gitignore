@@ -1,0 +1,5 @@
+.lbox/.env.*
+.lbox/home/sandbox/
+.claude/**
+!.claude/
+!.claude/settings.json
