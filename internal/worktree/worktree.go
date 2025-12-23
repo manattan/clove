@@ -106,10 +106,41 @@ func Add(repoRoot string, opts AddOptions) error {
 		}
 	}
 
+	// TypeScriptプロジェクトの場合、node_modulesをコピー
+	if err := copyNodeModulesIfExists(repoRoot, target); err != nil {
+		fmt.Printf("警告: node_modules のコピーに失敗しました: %v\n", err)
+	}
+
 	if opts.OpenCmd != "" {
 		_ = git.Run(opts.OpenCmd, target)
 	}
 
+	return nil
+}
+
+// copyNodeModulesIfExists copies node_modules from source to target if it exists
+func copyNodeModulesIfExists(repoRoot, target string) error {
+	packageJSON := filepath.Join(repoRoot, "package.json")
+	if _, err := os.Stat(packageJSON); err != nil {
+		// package.jsonがなければスキップ
+		return nil
+	}
+
+	nodeModules := filepath.Join(repoRoot, "node_modules")
+	if _, err := os.Stat(nodeModules); err != nil {
+		// node_modulesがなければスキップ
+		return nil
+	}
+
+	fmt.Printf("\nnode_modules をコピー中...\n")
+	targetNodeModules := filepath.Join(target, "node_modules")
+
+	// cp -a でシンボリックリンクや権限を保持してコピー
+	if err := git.Run("cp", "-a", nodeModules, targetNodeModules); err != nil {
+		return err
+	}
+
+	fmt.Printf("node_modules のコピーが完了しました\n")
 	return nil
 }
 
