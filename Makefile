@@ -32,7 +32,7 @@ install:
 ## build: ローカルにバイナリをビルド
 build:
 	@echo "==> Building $(BINARY_NAME)..."
-	go build -o $(BINARY_NAME) .
+	go build -o $(GOBIN)/$(BINARY_NAME) .
 	@echo "==> Built: ./$(BINARY_NAME)"
 
 ## test: すべてのテストを実行
