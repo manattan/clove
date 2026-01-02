@@ -1,7 +1,12 @@
 package cmd
 
 import (
+	"github.com/manattan/clove/internal/util"
 	"github.com/spf13/cobra"
+)
+
+var (
+	globalVerbose bool
 )
 
 var rootCmd = &cobra.Command{
@@ -44,6 +49,11 @@ func Execute() error {
 }
 
 func init() {
+	rootCmd.PersistentFlags().BoolVarP(&globalVerbose, "verbose", "v", false, "詳細なログを出力します")
+	rootCmd.PersistentPreRun = func(cmd *cobra.Command, args []string) {
+		util.SetVerbose(globalVerbose)
+	}
+
 	rootCmd.AddCommand(addCmd)
 	rootCmd.AddCommand(listCmd)
 	rootCmd.AddCommand(pruneCmd)

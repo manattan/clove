@@ -42,6 +42,6 @@ func GitOk(repoRoot string, args ...string) bool {
 func Run(name string, args ...string) error {
 	cmd := exec.Command(name, args...)
 	cmd.Stdout = os.Stdout
-	cmd.Stderr = os.Stderr
+	cmd.Stderr = os.Stdout // エラー出力も標準出力に出す
 	return cmd.Run()
 }
