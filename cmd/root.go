@@ -49,7 +49,7 @@ func Execute() error {
 }
 
 func init() {
-	rootCmd.PersistentFlags().BoolVarP(&globalVerbose, "verbose", "v", false, "詳細なログを出力します")
+	rootCmd.PersistentFlags().BoolVarP(&globalVerbose, "verbose", "v", true, "詳細なログを出力します")
 	rootCmd.PersistentPreRun = func(cmd *cobra.Command, args []string) {
 		util.SetVerbose(globalVerbose)
 	}
